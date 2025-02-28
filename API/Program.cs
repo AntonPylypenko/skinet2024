@@ -4,19 +4,18 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container. (SERVICES)
 builder.Services.AddControllers();
 builder.Services.AddDbContext<StoreContext>(opt => {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));  
 
-/* <---------- Anything BEFORE var app = builder.Build(); considered to be a Service --------> */
 var app = builder.Build();
-/* <---------- Anything AFTER var app = builder.Build(); considered to be a Middleware --------> */
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline. (MIDDLEWARE)
 
 app.MapControllers();
 
