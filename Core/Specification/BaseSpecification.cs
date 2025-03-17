@@ -7,7 +7,7 @@ public class BaseSpecification<T>(Expression<Func<T, bool>>? criteria) : ISpecif
 {
     protected BaseSpecification() : this(null) {}
 
-    public Expression<Func<T, bool>>? Criteria => criteria;
+    public Expression<Func<T, bool>>? Criteria => criteria; //x => (string.IsNullOrWhiteSpace(brand) || x.Brand == brand) && (string.IsNullOrWhiteSpace(type) || x.Type == type) C#->SQL x => (true || x.Brand == brand) && (true || x.Type == type)
 
     public Expression<Func<T, object>>? OrderBy { get; private set; }
 

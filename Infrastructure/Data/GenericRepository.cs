@@ -21,12 +21,12 @@ public class GenericRepository<T>(StoreContext context) : IGenericRepository<T> 
         return await context.Set<T>().FindAsync(id);
     }
 
-    public async Task<T?> GetEntittyWithSpec(ISpecification<T> spec)
+    public async Task<T?> GetEntityWithSpecAsync(ISpecification<T> spec)
     {
         return await ApplySpecification(spec).FirstOrDefaultAsync();
     }
 
-    public async Task<TResult?> GetEntittyWithSpec<TResult>(ISpecification<T, TResult> spec)
+    public async Task<TResult?> GetEntityWithSpecAsync<TResult>(ISpecification<T, TResult> spec)
     {
         return await ApplySpecification(spec).FirstOrDefaultAsync();
     }
