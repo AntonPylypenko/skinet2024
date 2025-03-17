@@ -1,9 +1,7 @@
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specification;
-using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
@@ -12,9 +10,9 @@ namespace API.Controllers;
 public class ProductsController(IProductRepository productRepository) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Product>>> GetProducts(string? brand, string? type, string? sort)
+    public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery]ProductSpecParams productSpecParams)
     {
-        var spec = new ProductSpecification(brand, type, sort);
+        var spec = new ProductSpecification(productSpecParams);
 
         var products = await productRepository.ListAsync(spec);
 
@@ -35,7 +33,7 @@ public class ProductsController(IProductRepository productRepository) : Controll
     public async Task<ActionResult<Product>> CreateProduct(Product product)
     {
         productRepository.Add(product);
-      
+
         if (await productRepository.SaveAllAsync())
         {
             return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
