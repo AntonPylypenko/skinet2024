@@ -1,3 +1,4 @@
+using API.RequestHelpers;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specification;
@@ -15,8 +16,11 @@ public class ProductsController(IProductRepository productRepository) : Controll
         var spec = new ProductSpecification(productSpecParams);
 
         var products = await productRepository.ListAsync(spec);
+        var count = await productRepository.CountAsync(spec);
 
-        return Ok(products); 
+        var pagination = new Pagination<Product>(productSpecParams.PageIndex, productSpecParams.PageSize, count, products);
+
+        return Ok(pagination);
     }
 
     [HttpGet("{id:int}")] //api/products/2
